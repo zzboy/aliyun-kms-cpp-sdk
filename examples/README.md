@@ -1,8 +1,8 @@
-# how to use examples
+# 如何运行例程
 
-## 1. Install SDK according to [README](https://github.com/aliyun/aliyun-openapi-cpp-sdk/blob/master/README.md)
+## 1. 根据 [README](https://github.com/aliyun/aliyun-openapi-cpp-sdk/blob/master/README-CN.md) 安装 SDK
 
-## 2. build examples
+## 2. 构建例程
 
 ### Linux
 
@@ -17,31 +17,33 @@ make -j
 
 ### Windows
 
-- Generate Visual Studio solution with the same way as buidl SDK.
+- 通过 CMake 构建 Visual Studio 解决方案
 
-  - Run cmake-ui
+  - 运行 cmake-ui
 
-  - select source code path(examples dir) and build path (create build dir in examples dir).
+  - 选在源代码目录(examples 目录)和构建目录(在 examples 创建 build 目录)。
 
-  - configure
+  - 配置 (configure)
 
-  - generate
+  - 生成 (generate)
 
-- Open `alibabacloud-sdk-examples.sln` in build directory.
+- 用 Visual Studio 从 build 目录打开 `alibabacloud-sdk-examples.sln`
 
-- Build -> Build Solution
+- 编译： 生成 -> 生成解决方案
 
 
-## 3. run examples
+## 3. 运行例程
 
 ### Linux
 
-- configure `accessKeyId` and `accessKeySecret` via env and then Run.
+- 配置环境变量 `accessKeyId` and `accessKeySecret`
 
 ```bash
 export ENV_AccessKeyId="your-accessKeyId"
 export ENV_AccessKeySecret="your-accessKeySecret"
+```
 
+```bash
 cd path/to/aliyun-openapi-cpp-sdk
 cd examples/build/bin
 
@@ -52,6 +54,6 @@ cd examples/build/bin
 
 ### Windows
 
-Configure env according to your windows OS.
+根据您的 Windows 版本设置环境变量
 
-Run .exe file in command window in directory build\\bin\\Release
+- 在命令行窗口直接运行 build\\bin\\Releaes 目录下的可执行文件，
