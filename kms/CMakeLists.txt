@@ -22,12 +22,12 @@ set(kms_public_header
 
 set(kms_public_header_model 
 	include/alibabacloud/kms/model/DecryptRequest.h
-	include/alibabacloud/kms/model/DecryptResult.h
+	include/alibabacloud/kms/model/DecryptResult.h)
 
 set(kms_src 
 	src/KmsClient.cc
 	src/model/DecryptRequest.cc
-	src/model/DecryptResult.cc
+	src/model/DecryptResult.cc)
 
 add_library(kms ${LIB_TYPE}
 	${kms_public_header}
