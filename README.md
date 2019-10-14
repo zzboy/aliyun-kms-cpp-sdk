@@ -1,20 +1,3 @@
-<p align="center">
-<a href="https://www.alibabacloud.com"><img src="https://aliyunsdk-pages.alicdn.com/icons/Aliyun.svg"></a>
-</p>
-
-<h1 align="center">Alibaba Cloud SDK for C++</h1>
-
-<p align="center">
-<a href="https://travis-ci.org/aliyun/aliyun-openapi-cpp-sdk"><img src="https://travis-ci.org/aliyun/aliyun-openapi-cpp-sdk.svg?branch=master" alt="Travis Build Status"></a>
-<a href="https://codecov.io/gh/aliyun/aliyun-openapi-cpp-sdk"><img src="https://codecov.io/gh/aliyun/aliyun-openapi-cpp-sdk/branch/master/graph/badge.svg" alt="codecov"></a>
-</p>
-
-
-Alibaba Cloud SDK for C++ 让您不用复杂编程即可访问云服务器、负载均衡、云监控等阿里云服务。这里向您介绍如何获取 Alibaba Cloud SDK for C++ 并开始调用。
-
-如果您在使用的过程中遇到任何问题，欢迎前往[阿里云SDK问答社区](https://yq.aliyun.com/tags/type_ask-tagid_23350)提问，提问前请阅读[提问引导](https://help.aliyun.com/document_detail/93957.html)。亦可在当前 GitHub [提交 Issues](https://github.com/aliyun/aliyun-openapi-cpp-sdk/issues/new)。
-
-
 ## 环境要求
 
 在使用 Alibaba Cloud SDK for C++ 前，确保您已经：
@@ -23,7 +6,6 @@ Alibaba Cloud SDK for C++ 让您不用复杂编程即可访问云服务器、负
 
 > **说明：** 为了保证您的账号安全，建议您使用RAM账号来访问阿里云服务。阿里云账号对拥有的资源有全部权限。RAM账号由阿里云账号授权创建，仅有对特定资源限定的操作权限。详情[参见RAM](https://help.aliyun.com/document_detail/28647.html)。
 
-* 开通了云产品服务。有些云产品如对象存储（OSS）需要先在[阿里云控制台](https://home.console.aliyun.com)开通服务。
 
 * 安装支持 C++ 11 或更高版本的编译器：
 	* Windows: Visual Studio 2015 或以上版本
@@ -35,7 +17,7 @@ Alibaba Cloud SDK for C++ 让您不用复杂编程即可访问云服务器、负
 ### Linux
 
 要在 Linux 平台进行编译, 您必须安装依赖的外部库文件 libcurl、libopenssl、libuuid、libjsoncpp, 通常情况下，系统的包管理器中的会有提供。
-
+注意，jsoncpp如果包找不到，可以直接在3rdparty中使用jsoncpp的源码安装。
 例如：在基于 Redhat / Fedora 的系统上安装这些软件包
 
 ```bash
@@ -51,7 +33,6 @@ sudo apt-get install libcurl4-openssl-dev libssl-dev uuid-dev libjsoncpp-dev
 
 手动编译安装
 ```bash
-  cd aliyun-openapi-cpp-sdk
   mkdir sdk_build
   cd sdk_build
   cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr ..
@@ -62,7 +43,6 @@ sudo apt-get install libcurl4-openssl-dev libssl-dev uuid-dev libjsoncpp-dev
 或者通过 `easyinstall.sh`一键式安装
 
 ```bash
-  cd aliyun-openapi-cpp-sdk
   sudo sh easyinstall.sh
 ```
 
@@ -94,7 +74,7 @@ msbuild INSTALL.vcxproj
 
 **注意：请以管理员身份运行 Visual Studio，否则无法安装 SDK**
 
-## 快速使用
+## 快速使用(KMS Decrypt接口的例子在examples下面，查看README编译kms示例)
 
 在调用 Alibaba Cloud SDK for C++ 时，您首先需要配置预处理器定义 ALIBABACLOUD_SHARED 以引用阿里云 C++ SDK 的共享库，然后通过创建 Client 实例提供身份验证，并指定云服务的地域，然后发送API请求。
 
