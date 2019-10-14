@@ -14,7 +14,7 @@
 # limitations under the License.
 #
 
-#if(CMAKE_HOST_WIN32)
+if(CMAKE_HOST_WIN32)
 	ExternalProject_Add(jsoncpp
 		URL ${CMAKE_CURRENT_SOURCE_DIR}/jsoncpp-0.10.5.tar.gz
 		URL_HASH MD5=db146bac5a126ded9bd728ab7b61ed6b
@@ -39,7 +39,7 @@ ExternalProject_Add(curl
 		-DENABLE_MANUAL=OFF
 		-DHTTP_ONLY=ON
 	)
-#endif()
+endif()
 
 ExternalProject_Add(catch
 	URL ${CMAKE_CURRENT_SOURCE_DIR}/catch-2.0.1.hpp
