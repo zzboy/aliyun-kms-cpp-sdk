@@ -1,6 +1,3 @@
-[English](./README.md) | 简体中文
-
-
 <p align="center">
 <a href="https://www.alibabacloud.com"><img src="https://aliyunsdk-pages.alicdn.com/icons/Aliyun.svg"></a>
 </p>
@@ -34,26 +31,6 @@ Alibaba Cloud SDK for C++ 让您不用复杂编程即可访问云服务器、负
 
 * 安装 CMake 3.0 或以上版本
 * 建议 4G 或以上内存
-
-## 安装 (从源代码构建)
-
-1. 从 GitHub 下载或 Git 克隆 [aliyun-openapi-cpp-sdk](https://github.com/aliyun/aliyun-openapi-cpp-sdk)
-
-* 直接下载 https://github.com/aliyun/aliyun-openapi-cpp-sdk/archive/master.zip
-* 使用 Git 命令获取
-
-```
-git clone https://github.com/aliyun/aliyun-openapi-cpp-sdk.git
-```
-
-2. 创建生成必要的构建文件
-
-```bash
-cd <path/to/aliyun-openapi-cpp-sdk>
-mkdir sdk_build
-cd sdk_build
-cmake ..
-```
 
 ### Linux
 
