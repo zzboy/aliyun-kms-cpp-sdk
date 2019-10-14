@@ -7,7 +7,6 @@
 ### Linux
 
 ```bash
-cd path/to/aliyun-openapi-cpp-sdk
 cd examples
 mkdir build
 cd build
@@ -33,27 +32,4 @@ make -j
 
 
 ## 3. 运行例程
-
-### Linux
-
-- 配置环境变量 `accessKeyId` and `accessKeySecret`
-
-```bash
-export ENV_AccessKeyId="your-accessKeyId"
-export ENV_AccessKeySecret="your-accessKeySecret"
-```
-
-```bash
-cd path/to/aliyun-openapi-cpp-sdk
-cd examples/build/bin
-
-# run ecs_demo
-./ecs_demo
-...
-```
-
-### Windows
-
-根据您的 Windows 版本设置环境变量
-
-- 在命令行窗口直接运行 build\\bin\\Releaes 目录下的可执行文件，
+注意，将libalibabacloud-sdk-core.so的安装目录设置到LD_LIBRARY_PATH
