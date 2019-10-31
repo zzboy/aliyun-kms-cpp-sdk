@@ -78,55 +78,30 @@ msbuild INSTALL.vcxproj
 
 在调用 Alibaba Cloud SDK for C++ 时，您首先需要配置预处理器定义 ALIBABACLOUD_SHARED 以引用阿里云 C++ SDK 的共享库，然后通过创建 Client 实例提供身份验证，并指定云服务的地域，然后发送API请求。
 
-以下代码展示了如何调用 DescribeInstancesAPI 查询指定地域所有 ECS 实例的详细信息。
-
-> **说明：** 您需要替换示例中的 your-region-id、your-access-key-id 和 your-access-key-secret 的值。
-
-```
+```cpp
 #include <iostream>
-#include <alibabacloud/core/AlibabaCloud.h>
-#include <alibabacloud/ecs/EcsClient.h>
+#include "alibabacloud/core/AlibabaCloud.h"
+#include "alibabacloud/kms/KmsClient.h"
 
+using namespace std;
 using namespace AlibabaCloud;
-using namespace AlibabaCloud::Ecs;
+using namespace AlibabaCloud::Kms;
 
-int main(int argc, char** argv) {
-  // 初始化 SDK
-  AlibabaCloud::InitializeSdk();
+int main() {
+  InitializeSdk();
+  std::shared_ptr<KmsClient> kmsClient = KmsClient::CreateKmsClient("<token>");
+  Model::DecryptRequest decryptRequest;
+  decryptRequest.setEncryptionContext("{\"biz\":\"dingding\"}");
+  decryptRequest.setCiphertextBlob("<edk>");
+  auto outcome = kmsClient->decrypt(decryptRequest);
+  cout << endl << "kms decrypt returned:" << endl;
+  cout << "error code: " << outcome.error().errorCode() << endl;
+  cout << "keyId: " << outcome.result().getKeyId() << endl << endl;
+  cout << "plainText: " << outcome.result().getPlaintext() << endl << endl;
+  cout << "KeyVersion: " << outcome.result().getKeyVersionId() << endl << endl;
 
-  // 配置 ecs 实例
-  ClientConfiguration configuration("<your-region-id>");
-  EcsClient client("<your-access-key-id>", "<your-access-key-secret>", configuration);
-
-  // 创建API请求并设置参数
-  Model::DescribeInstancesRequest request;
-  request.setPageSize(10);
-
-  auto outcome = client.describeInstances(request);
-  if (!outcome.isSuccess()) {
-    // 异常处理
-    std::cout << outcome.error().errorCode() << std::endl;
-    AlibabaCloud::ShutdownSdk();
-    return -1;
-  }
-
-  std::cout << "totalCount: " << outcome.result().getTotalCount() << std::endl;
-
-  // 关闭 SDK
-  AlibabaCloud::ShutdownSdk();
-  return 0;
+  ShutdownSdk();
 }
-```
-
-复制上述文件到 ecs_test.cc。
-
-Linux 下
-
-```bash
-~$ g++ -o ecstest ecs_test.cc --std=c++11 -lalibabacloud-sdk-core -l alibabacloud-sdk-ecs
-~$ ./ecstest
-# 结果或错误返回将在此展示
-~$
 ```
 
 ## Timeout 设置
@@ -155,61 +130,28 @@ CPP SDK 使用 libcurl 作为底层 HTTP 传输库。
 
 ```cpp
 #include <iostream>
-#include <alibabacloud/core/AlibabaCloud.h>
-#include <alibabacloud/ecs/EcsClient.h>
+#include "alibabacloud/core/AlibabaCloud.h"
+#include "alibabacloud/kms/KmsClient.h"
 
+using namespace std;
 using namespace AlibabaCloud;
-using namespace AlibabaCloud::Ecs;
+using namespace AlibabaCloud::Kms;
 
-int main(int argc, char** argv) {
-  // Initialize the SDK
-  AlibabaCloud::InitializeSdk();
+int main() {
+  InitializeSdk();
+  std::shared_ptr<KmsClient> kmsClient = KmsClient::CreateKmsClient("<token>", 1000, 6000);
+  Model::DecryptRequest decryptRequest;
+  decryptRequest.setEncryptionContext("{\"biz\":\"dingding\"}");
+  decryptRequest.setCiphertextBlob("<edk>");
+  auto outcome = kmsClient->decrypt(decryptRequest);
+  cout << endl << "kms decrypt returned:" << endl;
+  cout << "error code: " << outcome.error().errorCode() << endl;
+  cout << "keyId: " << outcome.result().getKeyId() << endl << endl;
+  cout << "plainText: " << outcome.result().getPlaintext() << endl << endl;
+  cout << "KeyVersion: " << outcome.result().getKeyVersionId() << endl << endl;
 
-  // Configure the ECS instance
-  ClientConfiguration configuration("<your-region-id>");
-  // specify timeout when create client.
-  configuration.setConnectTimeout(1500);
-  configuration.setReadTimeout(4000);
-
-  EcsClient client("<your-access-key-id>", "<your-access-key-secret>", configuration);
-
-  // Create an API request and set parameters
-  Model::DescribeInstancesRequest request;
-  request.setPageSize(10);
-  // specify timeout when request
-  request.setConnectTimeout(1000);
-  request.setReadTimeout(6000);
-
-  auto outcome = client.describeInstances(request);
-  if (!outcome.isSuccess()) {
-    // Handle exceptions
-    std::cout << outcome.error().errorCode() << std::endl;
-    AlibabaCloud::ShutdownSdk();
-    return -1;
-  }
-
-  std::cout << "totalCount: " << outcome.result().getTotalCount() << std::endl;
-
-  // Close the SDK
-  AlibabaCloud::ShutdownSdk();
-  return 0;
+  ShutdownSdk();
 }
 
 ```
 
-
-**更多 [例程](https://github.com/aliyun/aliyun-openapi-cpp-sdk/tree/master/examples)**
-
-## 问题
-[提交 Issue](https://github.com/aliyun/aliyun-openapi-cpp-sdk/issues/new/choose), 不符合指南的问题可能会立即关闭。
-
-## 发行说明
-每个版本的详细更改记录在[发行说明](CHANGELOG)中。
-
-## 贡献
-提交 Pull Request 之前请阅读[贡献指南](CONTRIBUTING.md)。
-
-## 许可证
-[Apache-2.0](http://www.apache.org/licenses/LICENSE-2.0)
-
-版权所有 1999-2019 阿里巴巴集团
