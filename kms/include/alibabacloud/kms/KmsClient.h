@@ -31,13 +31,12 @@ namespace AlibabaCloud
 		class ALIBABACLOUD_KMS_EXPORT KmsClient : public RpcServiceClient
 		{
 		public:
+			static std::shared_ptr<KmsClient> CreateKmsClient(const std::string token, const int connectTimeout = 1500, const int readTimeout = 4000);
+		public:
 			typedef Outcome<Error, Model::DecryptResult> DecryptOutcome;
 			typedef std::future<DecryptOutcome> DecryptOutcomeCallable;
 			typedef std::function<void(const KmsClient*, const Model::DecryptRequest&, const DecryptOutcome&, const std::shared_ptr<const AsyncCallerContext>&)> DecryptAsyncHandler;
-			KmsClient(const std::string token, const int connectTimeout = 1500, const int readTimeout = 4000);
 			KmsClient(const Credentials &credentials, const ClientConfiguration &configuration);
-			KmsClient(const std::shared_ptr<CredentialsProvider> &credentialsProvider, const ClientConfiguration &configuration);
-			KmsClient(const std::string &accessKeyId, const std::string &accessKeySecret, const ClientConfiguration &configuration);
 			~KmsClient();
 			DecryptOutcome decrypt(const Model::DecryptRequest &request)const;
 			void decryptAsync(const Model::DecryptRequest& request, const DecryptAsyncHandler& handler, const std::shared_ptr<const AsyncCallerContext>& context = nullptr) const;

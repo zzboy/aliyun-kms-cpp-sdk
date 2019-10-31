@@ -16,6 +16,7 @@
 
 #include <alibabacloud/kms/KmsClient.h>
 #include <alibabacloud/core/SimpleCredentialsProvider.h>
+#include <alibabacloud/core/Utils.h>
 
 using namespace AlibabaCloud;
 using namespace AlibabaCloud::Location;
@@ -26,31 +27,28 @@ namespace
 {
 	const std::string SERVICE_NAME = "Kms";
 }
-
-KmsClient::KmsClient(const std::string token, const int connectTimeout, const int readTimeout):
-	
+std::shared_ptr<KmsClient> KmsClient::CreateKmsClient(const std::string token, const int connectTimeout, const int readTimeout)
 {
-	
+	std::string base64Decode = Base64Decode(token);
+	if(base64Decode.empty()) return nullptr;
+	std::map<std::string, std::string> paramsMap = JsonToMap(base64Decode); 
+	if(paramsMap.empty() 
+		|| paramsMap.find("regionId") == paramsMap.end() 
+		|| paramsMap.find("accessKeyId") == paramsMap.end()
+		|| paramsMap.find("accessKeySecret") == paramsMap.end()
+		|| paramsMap.find("securityToken") == paramsMap.end()
+	) return nullptr;
+	ClientConfiguration configuration(paramsMap["regionId"]);
+	configuration.setConnectTimeout(connectTimeout);
+	configuration.setReadTimeout(readTimeout);
+	Credentials credentials(paramsMap["accessKeyId"], paramsMap["accessKeySecret"], paramsMap["securityToken"]);
+	return std::shared_ptr<KmsClient>(new KmsClient(credentials, configuration));
 }
 
 KmsClient::KmsClient(const Credentials &credentials, const ClientConfiguration &configuration) :
 	RpcServiceClient(SERVICE_NAME, std::make_shared<SimpleCredentialsProvider>(credentials), configuration)
 {
 	auto locationClient = std::make_shared<LocationClient>(credentials, configuration);
-	endpointProvider_ = std::make_shared<EndpointProvider>(locationClient, configuration.regionId(), SERVICE_NAME, "kms");
-}
-
-KmsClient::KmsClient(const std::shared_ptr<CredentialsProvider>& credentialsProvider, const ClientConfiguration & configuration) :
-	RpcServiceClient(SERVICE_NAME, credentialsProvider, configuration)
-{
-	auto locationClient = std::make_shared<LocationClient>(credentialsProvider, configuration);
-	endpointProvider_ = std::make_shared<EndpointProvider>(locationClient, configuration.regionId(), SERVICE_NAME, "kms");
-}
-
-KmsClient::KmsClient(const std::string & accessKeyId, const std::string & accessKeySecret, const ClientConfiguration & configuration) :
-	RpcServiceClient(SERVICE_NAME, std::make_shared<SimpleCredentialsProvider>(accessKeyId, accessKeySecret), configuration)
-{
-	auto locationClient = std::make_shared<LocationClient>(accessKeyId, accessKeySecret, configuration);
 	endpointProvider_ = std::make_shared<EndpointProvider>(locationClient, configuration.regionId(), SERVICE_NAME, "kms");
 }
 
