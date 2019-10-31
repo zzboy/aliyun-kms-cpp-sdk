@@ -24,6 +24,8 @@
 #else
 #include <openssl/hmac.h>
 #include <openssl/md5.h>
+#include <openssl/bio.h>
+#include <openssl/evp.h>
 #include <uuid/uuid.h>
 #endif
 #include <curl/curl.h>
@@ -67,6 +69,31 @@ std::string AlibabaCloud::UrlDecode(const std::string &src)
   curl_free(output);
   curl_easy_cleanup(curl);
   return result;
+}
+
+std::string AlibabaCloud::Base64Decode(const std::string &src)
+{
+  size_t srcLen = src.size(), padding = 0;
+  if(srcLen < 2) return "";
+  if (src[srcLen - 1] == '=' && src[srcLen-2] == '=') //last two chars are =
+     padding = 2;
+  else if (src[srcLen-1] == '=') //last char is =
+     padding = 1;
+  size_t decodeLen =  (srcLen*3)/4 - padding;
+  unsigned char* buffer = (unsigned char*)malloc(decodeLen + 1);
+  *(buffer + decodeLen) = '\0';
+  BIO *bio = BIO_new_mem_buf(src.c_str(), -1);
+  BIO *b64 = BIO_new(BIO_f_base64());
+  bio = BIO_push(b64, bio);
+  BIO_set_flags(bio, BIO_FLAGS_BASE64_NO_NL);
+  size_t decodeResLen = BIO_read(bio, buffer, srcLen);
+  BIO_free_all(bio);
+  std::string resStr = "";
+  if(decodeLen == decodeResLen){
+    resStr.append((char*)buffer, decodeResLen);
+  }
+  free(buffer);
+  return resStr; 
 }
 
 std::string AlibabaCloud::ComputeContentMD5(const char *data, size_t size)

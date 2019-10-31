@@ -27,6 +27,12 @@ namespace
 	const std::string SERVICE_NAME = "Kms";
 }
 
+KmsClient::KmsClient(const std::string token, const int connectTimeout, const int readTimeout):
+	
+{
+	
+}
+
 KmsClient::KmsClient(const Credentials &credentials, const ClientConfiguration &configuration) :
 	RpcServiceClient(SERVICE_NAME, std::make_shared<SimpleCredentialsProvider>(credentials), configuration)
 {
